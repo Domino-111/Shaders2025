@@ -1,66 +1,60 @@
-Shader "Unlit/MyFirstShader"
+Shader "Unlit/Lambert"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _ColorA("Color A", Color) = (1,1,1,1)
-        _ColorB("Color B", Color) = (0,0,0,1)
-        _Scale("Scale UV", float) = 1
-        _Offset("Offset UV", float) = 1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
+        LOD 100
 
         Pass
         {
-            HLSLPROGRAM
+            CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-
-            #define HALF_TAU UNITY_TWO_PI * 0.5
-            #define TAU UNITY_TWO_PI
+            #include "Lighting.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float3 normal : NORMAL;
-                float4 tanegnt : TANGENT;
-                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
+                float3 normal : NORMAL;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                float3 normal : TEXCOORD2;
+                float3 normal : TEXCOORD1;
             };
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-
-            float _Scale;
-            
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.normal = UnityObjectToWorldNormal(v.normal);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = float4(i.uv,0,1); //tex2D(_MainTex, i.uv);
-                return col;
+                float3 N = normalize(i.normal);
+                float3 L = _WorldSpaceLightPos0.xyz; //It says it's a position but it's a direction to the directional light
+
+                float3 lambert = dot(N, L);
+
+                float3 diffuseLight = lambert * _LightColor0.xyz;
+                return float4(diffuseLight, 1);
             }
-            ENDHLSL
+            ENDCG
         }
     }
 }
