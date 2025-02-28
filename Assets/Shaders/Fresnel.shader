@@ -1,16 +1,33 @@
-Shader "Unlit/Phong"
+Shader "Unlit/Fresnel"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color("Colour", color) = (1,1,1,1)
+        _Strength("Strength", range(0,10)) = 0.5
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
-
+        Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
+        
         Pass
         {
+            //ZTest //LEqual //Less Equal //Greater //NotEqual //GEqual
+            //Cull Front // Back // Off
+            Zwrite Off
+            
+            //BlendOp RevSub / DST - SRC
+            //BlendOp Sub    / SRC - DST
+            //BlendOp Add    / SRC + DST
+            
+            //Blend One One   //Additive blending
+            Blend SrcAlpha OneMinusSrcAlpha //Traditional Transparency 
+            //Blend One OneMinusSrcAlpha  //Premultiplied transparency
+            //Blend DstColor Zero //Multiplicative
+            //Blend DstColor SrcColor //2x Multiplicative
+            //BlendOp RevSub  //Add   //Subtract Src from Dst
+            //Blend One One
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -35,6 +52,8 @@ Shader "Unlit/Phong"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _Color;
+            float _Strength;
 
             v2f vert (appdata v)
             {
@@ -48,15 +67,10 @@ Shader "Unlit/Phong"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 N = i.normal;
-                float3 L = _WorldSpaceLightPos0.xyz;
-
+                float3 N = normalize(i.normal);
                 float3 V = normalize(_WorldSpaceCameraPos - i.worldPosition);
-                float3 R = reflect(-L, N);
-
-                float3 specularLight = saturate(dot(V,R));
-                specularLight = pow(specularLight, 1);
-                return float4(specularLight, 1);
+                float fresnel = pow(saturate(1 - dot(V, N)), _Strength);
+                return float4(fresnel.xxx * _Color, 0.5);
             }
             ENDCG
         }
