@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fresnel
-  m_Shader: {fileID: 4800000, guid: 621b672cc7773664ab80ebfe45ae8a1c, type: 3}
+  m_Name: BLIP
+  m_Shader: {fileID: 4800000, guid: 97974aa41dbbce64c886034bd34efe57, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Strength: 0.75
+    - _Gloss: 0
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.07179642, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

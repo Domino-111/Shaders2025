@@ -69,8 +69,10 @@ Shader "Unlit/Fresnel"
             {
                 float3 N = normalize(i.normal);
                 float3 V = normalize(_WorldSpaceCameraPos - i.worldPosition);
-                float fresnel = pow(saturate(1 - dot(V, N)), _Strength);
-                return float4(fresnel.xxx * _Color, 0.5);
+                float fresnel = 1 - dot(V, N);
+                fresnel *= (cos(_Time.y * 4) * 0.35 + 0.65);
+                fresnel = pow(saturate(fresnel), _Strength);
+                return float4(fresnel.xxx * _Color, fresnel.x);
             }
             ENDCG
         }
