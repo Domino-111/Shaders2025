@@ -32,13 +32,16 @@ Material:
     - _Amplitude: 1
     - _Glossiness: 0.5
     - _Metallic: 0
+    - _RefractionStrength: 0.25
     - _Speed: 1
     - _Steepness: 0.5
+    - _WaterFogDensity: 0.5
     - _Wavelength: 7.5
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _WaveA: {r: 1, g: 0, b: 5, a: 10}
-    - _WaveB: {r: 1, g: 0, b: 5, a: 10}
-    - _WaveC: {r: 1, g: 0, b: 5, a: 10}
+    - _Color: {r: 0, g: 1, b: 0.040459394, a: 1}
+    - _WaterFogColor: {r: 0.4104339, g: 1, b: 0, a: 0}
+    - _WaveA: {r: 1, g: 0.85, b: 0.27, a: 7.2}
+    - _WaveB: {r: -0.12, g: 1.01, b: 0.35, a: 1.26}
+    - _WaveC: {r: 1.1, g: -0.05, b: 0.24, a: 3.86}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
