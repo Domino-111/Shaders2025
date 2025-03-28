@@ -94,7 +94,7 @@ Shader "Custom/Gerstner"
             o.Smoothness = _Glossiness;
 
             o.Alpha = c.a;
-            o.Emission = ColorBelowWater(IN.screenPos) * (1 - c.a);
+            o.Emission = ColorBelowWater(IN.screenPos, o.Normal) * (1 - c.a);
         }
         void ResetAlpha(Input IN, SurfaceOutputStandard o, inout fixed4 color)
         {
